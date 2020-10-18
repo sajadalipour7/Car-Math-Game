@@ -5,15 +5,21 @@ using UnityEngine;
 public class Movement : MonoBehaviour
 {
 
-    [SerializeField] float ForwardSpeed = 10f;
-    [SerializeField] float BackwardSpeed = 10f;
-    [SerializeField] float TurnSpeed = 10f;
+    [SerializeField] float forwardSpeed = 20f;
+    [SerializeField] float backwardSpeed = 20f;
+    [SerializeField] float turnSpeed = 100f;
 
+    [SerializeField] ButtonPressed leftPressed;
+    [SerializeField] ButtonPressed rightPressed;
+    [SerializeField] ButtonPressed backwardPressed;
+    [SerializeField] ButtonPressed gasPressed;
+
+    enum State { MovingForward , MovingBackward , Nothing};
+    State stateOfMovement;
     // Start is called before the first frame update
     void Start()
     {
-        
-
+        stateOfMovement = State.Nothing;
     }
 
 
@@ -24,23 +30,41 @@ public class Movement : MonoBehaviour
 
     private void Move()
     {
-        if (Input.GetKey(KeyCode.W))
+        if (Input.GetKey(KeyCode.W) || gasPressed.PublicIsPressed())
         {
-            transform.Translate(0, 0, ForwardSpeed* Time.deltaTime, Space.Self);
+            stateOfMovement = State.MovingForward;
+            transform.Translate(0, 0, forwardSpeed* Time.deltaTime, Space.Self);
             //transform.position += Vector3.forward * Time.deltaTime * ForwardSpeed;
         }
-        else if (Input.GetKey(KeyCode.S))
+        else if (Input.GetKey(KeyCode.S) || backwardPressed.PublicIsPressed())
         {
-            transform.Translate(0, 0, -BackwardSpeed * Time.deltaTime, Space.Self);
+            stateOfMovement = State.MovingBackward;
+            transform.Translate(0, 0, -backwardSpeed * Time.deltaTime, Space.Self);
             //transform.position += Vector3.back * Time.deltaTime * BackwardSpeed;
         }
-        if (Input.GetKey(KeyCode.D))
+        else
         {
-            transform.Rotate(0, 1 * Time.deltaTime * TurnSpeed, 0);
+            stateOfMovement = State.Nothing;
         }
-        else if (Input.GetKey(KeyCode.A))
+        if (Input.GetKey(KeyCode.D) || rightPressed.PublicIsPressed())
         {
-            transform.Rotate(0, -1 * Time.deltaTime * TurnSpeed, 0);
+            int direction = 1;
+            if (stateOfMovement == State.MovingBackward)
+            {
+                direction = -1;
+            }
+            transform.Rotate(0, 1 * Time.deltaTime * turnSpeed*direction, 0);
         }
+        else if (Input.GetKey(KeyCode.A) || leftPressed.PublicIsPressed())
+        {
+            int direction = 1;
+            if (stateOfMovement == State.MovingBackward)
+            {
+                direction = -1;
+            }
+            transform.Rotate(0, -1 * Time.deltaTime * turnSpeed*direction, 0);
+        }
+
     }
+
 }
