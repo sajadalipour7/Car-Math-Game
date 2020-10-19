@@ -9,6 +9,7 @@ public class QuestionHandler : MonoBehaviour
 
     [SerializeField] TextMeshProUGUI questionText;
     [SerializeField] Button buttonA,buttonB,buttonC,buttonD;
+    [SerializeField] Movement speedChanger;
 
     private Question activeQuestion;
     
@@ -53,11 +54,12 @@ public class QuestionHandler : MonoBehaviour
         if (isCorrect)
         {
             print("correct");
-
+            speedChanger.ChangeSpeed(5f);
         }
         else
         {
             print("wrong!");
+            speedChanger.ChangeSpeed(-5f);
         }
 
         GenerateNewQuestion();

@@ -6,6 +6,8 @@ public class Movement : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI speedText;
 
+    [SerializeField] AudioSource audioSource;
+
     [SerializeField] float forwardSpeed = 20f;
     [SerializeField] float backwardSpeed = 20f;
     [SerializeField] float turnSpeed = 100f;
@@ -18,6 +20,7 @@ public class Movement : MonoBehaviour
     void Start()
     {
         speedText.text = "Speed : " + ((int)(forwardSpeed)).ToString() + " KM/h";
+        StartCoroutine("SoundStart");
     }
 
 
@@ -58,7 +61,14 @@ public class Movement : MonoBehaviour
     public void ChangeSpeed(float amount)
     {
         forwardSpeed += amount;
+        audioSource.volume += amount / 20;
         speedText.text = "Speed : " + ((int)(forwardSpeed)).ToString() + " KM/h";
+    }
+
+    IEnumerator SoundStart()
+    {
+        yield return new WaitForSeconds(2f);
+        audioSource.Play();
     }
 
     
