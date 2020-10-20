@@ -7,7 +7,7 @@ using TMPro;
 public class QuestionHandler : MonoBehaviour
 {
 
-    [SerializeField] TextMeshProUGUI questionText;
+    [SerializeField] TextMeshProUGUI questionText,optionsText;
     [SerializeField] Button buttonA,buttonB,buttonC,buttonD;
     [SerializeField] Movement speedChanger;
 
@@ -68,7 +68,8 @@ public class QuestionHandler : MonoBehaviour
     void GenerateNewQuestion()
     {
         Question question = new Question();
-        questionText.text = "Question\n" + question.GetQuestionString() + "\n\n" + question.GetOptionsString();
+        questionText.text = question.GetQuestionString();
+        optionsText.text=question.GetOptionsString();
         activeQuestion = question;
     }
 

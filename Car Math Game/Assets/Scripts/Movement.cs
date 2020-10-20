@@ -14,13 +14,13 @@ public class Movement : MonoBehaviour
 
     [SerializeField] ButtonPressed leftPressed;
     [SerializeField] ButtonPressed rightPressed;
-    
-    
+
+    Vector3 finishLine = new Vector3(-1424.35f, 10.47f, 3121.65f);
     // Start is called before the first frame update
     void Start()
     {
         speedText.text = "Speed : " + ((int)(forwardSpeed)).ToString() + " KM/h";
-        StartCoroutine("SoundStart");
+        
     }
 
 
@@ -31,6 +31,11 @@ public class Movement : MonoBehaviour
 
     private void Move()
     {
+        if (Vector3.Distance(finishLine, transform.position)<15f)
+        {
+            
+            Time.timeScale = 0;
+        }
 
         transform.Translate(0, 0, forwardSpeed * Time.deltaTime, Space.Self);
         if (Input.GetKey(KeyCode.W) )
@@ -60,16 +65,21 @@ public class Movement : MonoBehaviour
 
     public void ChangeSpeed(float amount)
     {
+        if (amount > 0)
+        {
+            turnSpeed -= 2;
+            audioSource.Play();
+        }
+        else
+        {
+            turnSpeed += 2;
+        }
         forwardSpeed += amount;
         audioSource.volume += amount / 20;
         speedText.text = "Speed : " + ((int)(forwardSpeed)).ToString() + " KM/h";
     }
 
-    IEnumerator SoundStart()
-    {
-        yield return new WaitForSeconds(2f);
-        audioSource.Play();
-    }
+    
 
     
 

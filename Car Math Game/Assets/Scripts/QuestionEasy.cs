@@ -42,9 +42,9 @@ public class Question
         optionsArray[0] = tmp;
         correctOptionIndex = changeIndex;
 
-        optionsString = "A) " + optionsArray[0].ToString() + "\n" +
-            "B) " + optionsArray[1].ToString() + "\n" +
-            "C) " + optionsArray[2].ToString() + "\n" +
+        optionsString = "A) " + optionsArray[0].ToString() + "\n\n" +
+            "B) " + optionsArray[1].ToString() + "\n\n" +
+            "C) " + optionsArray[2].ToString() + "\n\n" +
             "D) " + optionsArray[3].ToString();
     }
 
