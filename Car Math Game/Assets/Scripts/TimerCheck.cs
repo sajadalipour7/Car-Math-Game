@@ -14,6 +14,8 @@ public class TimerCheck : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Screen.sleepTimeout = SleepTimeout.NeverSleep;
+        Time.timeScale = 1;
         textMesh=GetComponent<TextMeshProUGUI>();
         timeNow = TimerSet;
         StartCoroutine("TimerTick");
@@ -36,6 +38,7 @@ public class TimerCheck : MonoBehaviour
         {
             timeNow--;
             textMesh.text = "TIME : " + timeNow.ToString() + " S";
+            
             yield return new WaitForSeconds(1f);
         }
     }
@@ -43,7 +46,7 @@ public class TimerCheck : MonoBehaviour
     public void RestartGame()
     {
         Time.timeScale = 1;
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void GoToMenu()

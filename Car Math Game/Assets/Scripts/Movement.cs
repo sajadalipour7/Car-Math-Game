@@ -1,12 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using TMPro;
+
 public class Movement : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI speedText;
 
     [SerializeField] AudioSource audioSource;
+
+    [SerializeField] Transform finishCube;
 
     [SerializeField] float forwardSpeed = 20f;
     [SerializeField] float backwardSpeed = 20f;
@@ -15,11 +20,23 @@ public class Movement : MonoBehaviour
     [SerializeField] ButtonPressed leftPressed;
     [SerializeField] ButtonPressed rightPressed;
 
-    Vector3 finishLine = new Vector3(-1424.35f, 10.47f, 3121.65f);
+    [SerializeField] Button changeTiltButton;
+
+
+    [SerializeField] float tiltAmount = 2f;
+
+    private bool tiltMode = false;
+
+    Vector3 finishLine;
     // Start is called before the first frame update
     void Start()
     {
+        if (SceneManager.GetActiveScene().buildIndex == 6)
+        {
+            tiltAmount = 2.5f;
+        }
         speedText.text = "Speed : " + ((int)(forwardSpeed)).ToString() + " KM/h";
+        finishLine = finishCube.position;
         
     }
 
@@ -33,8 +50,8 @@ public class Movement : MonoBehaviour
     {
         if (Vector3.Distance(finishLine, transform.position)<15f)
         {
-            
             Time.timeScale = 0;
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
 
         transform.Translate(0, 0, forwardSpeed * Time.deltaTime, Space.Self);
@@ -60,7 +77,10 @@ public class Movement : MonoBehaviour
             
             transform.Rotate(0, -1 * Time.deltaTime * turnSpeed, 0);
         }
-
+        if (tiltMode)
+        {
+            transform.Rotate(0, tiltAmount * Input.acceleration.x, 0);
+        }
     }
 
     public void ChangeSpeed(float amount)
@@ -77,6 +97,26 @@ public class Movement : MonoBehaviour
         forwardSpeed += amount;
         audioSource.volume += amount / 20;
         speedText.text = "Speed : " + ((int)(forwardSpeed)).ToString() + " KM/h";
+    }
+
+
+    public void changeTiltMode()
+    {
+        if (tiltMode)
+        {
+            tiltMode = false;
+            rightPressed.gameObject.SetActive(true);
+            leftPressed.gameObject.SetActive(true);
+            changeTiltButton.GetComponentInChildren<Text>().text = "Tilt";
+
+        }
+        else
+        {
+            tiltMode = true;
+            rightPressed.gameObject.SetActive(false);
+            leftPressed.gameObject.SetActive(false);
+            changeTiltButton.GetComponentInChildren<Text>().text = "Steer";
+        }
     }
 
     

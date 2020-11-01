@@ -11,6 +11,8 @@ public class QuestionHandler : MonoBehaviour
     [SerializeField] Button buttonA,buttonB,buttonC,buttonD;
     [SerializeField] Movement speedChanger;
 
+    [SerializeField] int difficulty=1;
+
     private Question activeQuestion;
     
     // Start is called before the first frame update
@@ -67,7 +69,7 @@ public class QuestionHandler : MonoBehaviour
 
     void GenerateNewQuestion()
     {
-        Question question = new Question();
+        Question question = new Question(difficulty);
         questionText.text = question.GetQuestionString();
         optionsText.text=question.GetOptionsString();
         activeQuestion = question;
